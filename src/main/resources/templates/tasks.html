@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Todo Application</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            background: #0f0f10;
+            color: #e4e4e7;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        .container-box {
+            max-width: 700px;
+            margin: auto;
+            margin-top: 80px;
+            padding: 30px;
+            background: #18181b;
+            border-radius: 16px;
+            border: 1px solid #2a2a2e;
+        }
+
+        h1 {
+            font-size: 26px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .form-control {
+            background: #111;
+            border: 1px solid #2a2a2e;
+            color: white;
+            border-radius: 10px;
+        }
+
+        .form-control:focus {
+            background: #111;
+            color: white;
+            border-color: #3f3f46;
+            box-shadow: none;
+        }
+
+        .btn-primary {
+            background: #27272a;
+            border: 1px solid #3f3f46;
+            border-radius: 10px;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #3f3f46;
+            border-color: #52525b;
+        }
+
+        .task-card {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #111113;
+            padding: 14px 16px;
+            border-radius: 10px;
+            margin-top: 10px;
+            border: 1px solid #232326;
+            transition: all 0.2s ease;
+        }
+
+        .task-card:hover {
+            background: #18181b;
+            border-color: #3f3f46;
+        }
+
+        .task-title {
+            font-size: 15px;
+            font-weight: 500;
+            color: #e4e4e7;
+        }
+
+        .text-strikethrough {
+            text-decoration: line-through;
+            color: #71717a;
+        }
+
+        .btn-sm {
+            border-radius: 8px;
+            padding: 4px 10px;
+            font-size: 12px;
+        }
+
+        .btn-outline-secondary {
+            border-color: #3f3f46;
+            color: #a1a1aa;
+        }
+
+        .btn-outline-secondary:hover {
+            background: #27272a;
+            color: white;
+        }
+
+        .btn-outline-danger {
+            border-color: #3f3f46;
+            color: #a1a1aa;
+        }
+
+        .btn-outline-danger:hover {
+            background: #3a1d1d;
+            color: #f87171;
+            border-color: #7f1d1d;
+        }
+
+        .empty-state {
+            color: #71717a;
+            margin-top: 20px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container-box">
+
+    <h1>Todo</h1>
+
+    <!-- Input -->
+    <form action="/" method="post" class="row mt-4 g-2">
+        <div class="col-md-9">
+            <input type="text" name="title"
+                   class="form-control"
+                   placeholder="Add a task..."
+                   required>
+        </div>
+        <div class="col-md-3">
+            <button class="btn btn-primary w-100">Add</button>
+        </div>
+    </form>
+
+    <!-- Tasks -->
+    <div class="mt-4" th:if="${tasks != null}">
+        <div th:each="task : ${tasks}" class="task-card">
+
+            <span class="task-title"
+                  th:classappend="${task.completed} ? 'text-strikethrough'"
+                  th:text="${task.title}">
+            </span>
+
+            <div>
+                <a th:href="@{/{id}/toggle(id=${task.id})}"
+                   class="btn btn-sm"
+                   th:classappend="${task.completed} ? 'btn-outline-warning' : 'btn-outline-success'"
+                   th:text="${task.completed} ? 'Undo' : 'Complete'">
+                </a>
+
+                <a th:href="@{/{id}/delete(id=${task.id})}"
+                   class="btn btn-outline-danger btn-sm">Delete</a>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Empty -->
+    <div th:if="${tasks == null}" class="empty-state">
+        No tasks available
+    </div>
+
+</div>
+
+</body>
+</html>
